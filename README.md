@@ -137,15 +137,19 @@ nitj-lost-found/
 │   │   ├── Message.js         # Chat message model
 │   │   └── Notification.js    # Notification model
 │   ├── routes/
-│   │   ├── auth.js            # Google OAuth routes
-│   │   ├── posts.js           # CRUD for posts
-│   │   ├── chat.js            # Chat & image routes
-│   │   ├── users.js           # User routes
-│   │   └── notifications.js   # Notification routes
+│   │   ├── auth.js            # Auth route definitions
+│   │   ├── posts.js           # Post route definitions
+│   │   ├── chat.js            # Chat route definitions
+│   │   ├── users.js           # User route definitions
+│   │   └── notifications.js   # Notification route definitions
+│   ├── controllers/
+│   │   ├── authController.js         # Authentication, OTP & profile
+│   │   ├── postController.js         # Post CRUD, archive & notify
+│   │   ├── chatController.js         # Conversations & chat images
+│   │   ├── userController.js         # User search & profiles
+│   │   └── notificationController.js # Notification management
 │   ├── middleware/
 │   │   └── auth.js            # JWT middleware
-│   ├── controllers/
-│   │   └── postController.js  # Archive & notify logic
 │   ├── config/
 │   │   └── cloudinary.js      # Upload config
 │   └── utils/

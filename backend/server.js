@@ -59,7 +59,6 @@ setupSocketHandlers(io);
 
 // Cron job: Archive posts older than 7 days (runs every day at midnight)
 cron.schedule('0 0 * * *', async () => {
-  console.log('Running daily post archive job...');
   await archiveOldPosts();
 });
 
