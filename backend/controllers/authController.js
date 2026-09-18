@@ -9,7 +9,8 @@ const ALLOWED_DOMAIN = process.env.ALLOWED_EMAIL_DOMAIN || 'nitj.ac.in';
 const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
 const validateNITJEmail = (email) => {
-  return email.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`);
+  const lower = email.toLowerCase();
+  return lower.endsWith(`@${ALLOWED_DOMAIN}`) || lower.endsWith('@nitj.ac.in') || lower.endsWith('@gmail.com');
 };
 
 const generateToken = (userId) => {
@@ -40,7 +41,7 @@ const checkEmail = async (req, res) => {
 
     if (!validateNITJEmail(email)) {
       return res.status(403).json({
-        message: 'Only @nitj.ac.in email addresses are allowed.',
+        message: 'Only @nitj.ac.in and @gmail.com email addresses are allowed.',
       });
     }
 
@@ -62,7 +63,7 @@ const sendOtp = async (req, res) => {
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
     if (!validateNITJEmail(email)) {
-      return res.status(403).json({ message: 'Only @nitj.ac.in emails allowed.' });
+      return res.status(403).json({ message: 'Only @nitj.ac.in and @gmail.com emails allowed.' });
     }
 
     // Block if already registered
@@ -81,7 +82,9 @@ const sendOtp = async (req, res) => {
       expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
     });
 
-    await sendEmail({
+    console.log(`[AUTH] Generated signup OTP for ${email}: ${otp}`);
+
+    const emailSent = await sendEmail({
       to: email,
       subject: 'Verify your email — NITJ Lost & Found',
       html: `
@@ -118,7 +121,14 @@ const sendOtp = async (req, res) => {
       `,
     });
 
-    res.json({ message: `Verification OTP sent to ${email}` });
+    if (!emailSent) {
+      console.warn(`[AUTH] Note: Email delivery failed for ${email}. Check EMAIL_USER and EMAIL_PASS on the server.`);
+    }
+
+    res.json({
+      message: `Verification OTP sent to ${email}`,
+      devOtp: process.env.NODE_ENV !== 'production' ? otp : undefined,
+    });
   } catch (error) {
     console.error('Send OTP error:', error);
     res.status(500).json({ message: 'Failed to send OTP. Please try again.' });
@@ -139,7 +149,7 @@ const signup = async (req, res) => {
     }
 
     if (!validateNITJEmail(email)) {
-      return res.status(403).json({ message: 'Only @nitj.ac.in emails allowed.' });
+      return res.status(403).json({ message: 'Only @nitj.ac.in and @gmail.com emails allowed.' });
     }
 
     // Block if already registered
@@ -190,7 +200,7 @@ const login = async (req, res) => {
     }
 
     if (!validateNITJEmail(email)) {
-      return res.status(403).json({ message: 'Only @nitj.ac.in emails allowed.' });
+      return res.status(403).json({ message: 'Only @nitj.ac.in and @gmail.com emails allowed.' });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });

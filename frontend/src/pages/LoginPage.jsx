@@ -123,8 +123,9 @@ const LoginPage = () => {
   };
 
   const validateEmail = (e) => {
-    if (!e.toLowerCase().endsWith('@nitj.ac.in')) {
-      toast.error('Only @nitj.ac.in emails are allowed');
+    const lower = e.toLowerCase();
+    if (!lower.endsWith('@nitj.ac.in') && !lower.endsWith('@gmail.com')) {
+      toast.error('Only @nitj.ac.in or @gmail.com emails are allowed');
       return false;
     }
     return true;
@@ -260,22 +261,22 @@ const LoginPage = () => {
             <div className="bg-brand-surface border border-brand-border rounded-xl p-4 mb-6 flex items-start gap-3">
               <Shield className="w-5 h-5 text-brand-accent flex-shrink-0 mt-0.5" />
               <div className="text-xs text-brand-muted leading-relaxed">
-                Only <code className="bg-brand-border px-1.5 py-0.5 rounded font-mono text-brand-accent">@nitj.ac.in</code> emails are allowed.
-                <br />Example: <span className="text-gray-400">adityakm.cs.23@nitj.ac.in</span>
+                Accepted: <code className="bg-brand-border px-1.5 py-0.5 rounded font-mono text-brand-accent">@nitj.ac.in</code> or <code className="bg-brand-border px-1.5 py-0.5 rounded font-mono text-brand-accent">@gmail.com</code>
+                <br />Example: <span className="text-gray-400">student@nitj.ac.in</span> or <span className="text-gray-400">yourname@gmail.com</span>
               </div>
             </div>
 
             <form onSubmit={handleCheckEmail} className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-200 mb-2">
-                  NITJ Email Address
+                  Email Address
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted" />
                   <input
                     type="email"
                     className="input pl-10"
-                    placeholder="rollno.branch.year@nitj.ac.in"
+                    placeholder="student@nitj.ac.in or name@gmail.com"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     autoFocus
@@ -359,7 +360,7 @@ const LoginPage = () => {
             <div className="bg-brand-accent/10 border border-brand-accent/20 rounded-xl p-4 mb-6 flex items-start gap-3">
               <UserPlus className="w-5 h-5 text-brand-accent flex-shrink-0 mt-0.5" />
               <div className="text-xs text-brand-muted leading-relaxed">
-                No account found for this email. Enter the OTP sent to your inbox to verify and create an account.
+                <span className="font-semibold text-white">New Account Registration:</span> A 6-digit verification OTP has been sent to your email. Enter it below to verify and create your account.
               </div>
             </div>
 

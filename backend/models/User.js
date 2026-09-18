@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    match: [/^[a-zA-Z0-9._%+-]+@nitj\.ac\.in$/, 'Only NITJ email addresses are allowed'],
+    match: [/^[a-zA-Z0-9._%+-]+@(nitj\.ac\.in|gmail\.com)$/, 'Only NITJ or Gmail email addresses are allowed'],
   },
   password: {
     type: String,

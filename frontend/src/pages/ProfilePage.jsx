@@ -62,7 +62,9 @@ const ProfilePage = () => {
             <div className="text-xs text-brand-muted mb-1 flex items-center gap-1.5">
               <Mail className="w-3 h-3" /> Email Domain
             </div>
-            <div className="font-mono font-semibold text-green-400">@nitj.ac.in (Verified)</div>
+            <div className="font-mono font-semibold text-green-400">
+              {user?.email?.split('@')[1] ? `@${user.email.split('@')[1]} (Verified)` : 'Verified'}
+            </div>
           </div>
         </div>
       </div>
